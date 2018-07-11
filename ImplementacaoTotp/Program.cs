@@ -11,19 +11,24 @@ namespace ImplementacaoTotp
     {
         static void Main(string[] args)
         {
+            long timeStepMatched;
             //var key = KeyGeneration.GenerateRandomKey(20);
 
             var base32Bytes = Base32Encoding.ToBytes("TESTANDOCHAVEBASE32KEY");
             //var base32String = Base32Encoding.ToString("TESTANDOCHAVEBASE32KEY");
 
 
-            var hexString = ByteArrayToHexString(base32Bytes);
-            var hexByteArray = HexStringToByteArray(hexString);
+            //var hexString = ByteArrayToHexString(base32Bytes);
+            //var hexByteArray = HexStringToByteArray(hexString);
 
+            
             var totp = new Totp(base32Bytes);
-            string codigo = totp.ComputeTotp(DateTime.Now);
+            string codigo = totp.ComputeTotp(DateTime.UtcNow);
+
+            bool validado = totp.VerifyTotp(codigo, out timeStepMatched);
 
             Console.WriteLine(codigo);
+            Console.WriteLine(validado);
             Console.ReadKey();
         }
         public static string ByteArrayToHexString(byte[] Bytes)
